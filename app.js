@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
+const os = require('os');
 
 const app = express();
 const port = 9292;
@@ -18,11 +19,27 @@ app.post('/open', (req, res) => {
   // Normalize the path to handle potential issues with slashes
   const normalizedPath = path.normalize(folderPath);
 
-  // Use the 'start' command which handles spaces and special characters better
-  exec(`start "" "${normalizedPath}"`, (error) => {
+  let command;
+  if (os.platform() === 'win32') {
+    // Windows
+    command = `start "" "${normalizedPath}"`;
+  } else if (os.platform() === 'darwin') {
+    // macOS
+    command = `open "${normalizedPath}"`;
+  } else {
+    // Linux (Ubuntu and others)
+    // Try multiple file managers in order of preference
+    const fileManagers = ['xdg-open', 'nautilus', 'nemo', 'caja', 'thunar', 'pcmanfm', 'dolphin'];
+    // command = fileManagers.map(fm => `${fm} "${normalizedPath}"`).join(' || ');
+    command = `xdg-open ${normalizedPath}`
+    console.log(command);
+  }
+
+  exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error opening folder: ${error}`);
-      res.status(500).json({ error: 'Failed to open folder', details: error.message });
+      console.error(`stderr: ${stderr}`);
+      res.status(500).json({ error: 'Failed to open folder', details: error.message, stderr });
     } else {
       res.json({ success: true });
     }
@@ -34,7 +51,7 @@ app.post('/open-vscode', (req, res) => {
   const folderPath = req.body.path;
   const normalizedPath = path.normalize(folderPath);
 
-  exec(`code "${normalizedPath}"`, (error) => {
+  exec(`code ${normalizedPath}`, (error) => {
     if (error) {
       console.error(`Error opening folder in VS Code: ${error}`);
       res.status(500).json({ error: 'Failed to open folder in VS Code', details: error.message });
