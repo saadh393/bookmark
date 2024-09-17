@@ -1,18 +1,29 @@
 :root {
-  --primary-color: #3498db;
+  --primary-color: #e8b008;
   --secondary-color: #2ecc71;
-  --background-color: #f4f4f4;
-  --text-color: #333;
+  --background-color: #111111;
+  --text-color: #706d69;
   --border-radius: 5px;
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
   margin: 0;
   padding: 0;
+}
+
+* {
+  accent-color: #282828;
+}
+
+input,
+select,
+button {
+  background-color: #282828;
+  border-color: #050505 !;
 }
 
 .container {
@@ -37,14 +48,14 @@ input[type="text"],
 select {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #050505;
   border-radius: var(--border-radius);
   font-size: 16px;
 }
 
 button {
   padding: 10px 15px;
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
   color: white;
   border: none;
   border-radius: var(--border-radius);
@@ -52,12 +63,17 @@ button {
   transition: background-color 0.3s ease;
 }
 
+button img {
+  height: 20px;
+  width: 20px;
+}
+
 button:hover {
   background-color: #2980b9;
 }
 
 .group {
-  background-color: white;
+  background-color: #282828;
   border-radius: var(--border-radius);
   padding: 15px;
   margin-bottom: 20px;
@@ -94,16 +110,21 @@ li button {
   margin-left: 5px;
 }
 
-li button:nth-child(2) {
+/* li button:nth-child(2) {
   background-color: var(--secondary-color);
-}
+} */
 
 li button:nth-child(2):hover {
-  background-color: #27ae60;
+  /* background-color: #27ae60; */
 }
 
 li button:last-child {
-  background-color: #e74c3c;
+  padding: 0px;
+}
+
+li button:last-child img {
+  object-fit: contain;
+  /* background-color: #e74c3c; */
 }
 
 li button:last-child:hover {

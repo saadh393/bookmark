@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 const app = express();
 const port = 9292;
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.get('/', (req, res) => {

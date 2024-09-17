@@ -24,9 +24,15 @@ function renderBookmarks() {
       li.innerHTML = `
         <span>${path}</span>
         <div>
-          <button onclick="openFolder('${group}', ${index})">Open in Explorer</button>
-          <button onclick="openInVSCode('${group}', ${index})">Open in VS Code</button>
-          <button onclick="removeBookmark('${group}', ${index})">Remove</button>
+          <button onclick="openFolder('${group}', ${index})">
+            <img src="./assets/icons/folder.svg" alt="" />
+          </button>
+          <button onclick="openInVSCode('${group}', ${index})">
+            <img src="./assets/icons/vscode.svg" alt="" />
+          </button>
+          <button onclick="removeBookmark('${group}', ${index})">
+            <img src="./assets/icons/delete.png" alt="" />
+          </button>
         </div>
       `;
       ul.appendChild(li);
