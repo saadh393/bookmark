@@ -1,1 +1,7 @@
-xdg-open "/home/saad/Programming/Analyzen/InfluenyZen/Test/insta-cookie"
+Server running at http://localhost:9292
+stdout: VS Code opened successfully with workspace: /home/saad/.local/lib/python3.8/site-packages/instaloader
+
+stderr: 
+stdout: VS Code opened successfully with workspace: /home/saad/Programming/Analyzen/InfluenyZen/scrapers
+
+stderr: 

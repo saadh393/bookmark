@@ -60,29 +60,36 @@ A simple, efficient web application to bookmark and quickly access your frequent
    [Unit]
    Description=Bookmarker Service
    After=network.target
-
-   [Service]
-   ExecStart=/home/saad/.nvm/versions/node/v18.18.0/bin/node /home/saad/Programming/Node.js/Bookmarker/app.js
-   WorkingDirectory=/home/saad
-   Restart=on-failure
-   RestartSec=5
-   User=saad
-   Group=saad
-   Environment=PYTHONUNBUFFERED=1
-   StandardOutput=append:/home/saad/Programming/Node.js/Bookmarker/bookmarker-script.log
-   StandardError=append:/home/saad/Programming/Node.js/Bookmarker/bookmarker-error.log
-
-   [Install]
-   WantedBy=multi-user.target
    ```
 
-   Save and close the file (in nano: Ctrl+X, then Y, then Enter).
+[Service]
+ExecStart=/home/saad/.nvm/versions/node/v18.18.0/bin/node /home/saad/Programming/Node.js/Bookmarker/app.js
+WorkingDirectory=/home/saad
+Restart=on-failure
+RestartSec=5
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=XAUTHORITY=/home/saad/.Xauthority
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+User=saad
+Group=saad
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/home/saad/Programming/Node.js/Bookmarker/bookmarker-script.log
+StandardError=append:/home/saad/Programming/Node.js/Bookmarker/bookmarker-error.log
+
+[Install]
+WantedBy=multi-user.target
+
+````
+
+Save and close the file (in nano: Ctrl+X, then Y, then Enter).
 
 3. **Set correct permissions**
 
-   ```bash
-   sudo chmod 644 /etc/systemd/system/bookmark.service
-   ```
+```bash
+sudo chmod 644 /etc/systemd/system/bookmark.service
+````
 
 4. **Create log file**
 
@@ -90,6 +97,13 @@ A simple, efficient web application to bookmark and quickly access your frequent
    sudo touch /home/saad/Programming/Node.js/Bookmarker/bookmarker-script.log
    sudo chown saad:saad /home/saad/Programming/Node.js/Bookmarker/bookmarker-script.log
    ```
+
+4.1 **Install Dependenceis**
+
+```bash
+sudo apt-get update
+sudo apt-get install libglib2.0-bin
+```
 
 5. **Reload systemd**
 
@@ -112,5 +126,5 @@ A simple, efficient web application to bookmark and quickly access your frequent
 8. **Check the status**
 
    ```bash
-   sudo systemctl status bookmark.service
+
    ```

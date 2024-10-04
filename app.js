@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const os = require('os');
+const fs = require('fs').promises
+
 
 const app = express();
 const port = 9292;
@@ -30,8 +32,8 @@ app.post('/open', (req, res) => {
     // Linux (Ubuntu and others)
     // Try multiple file managers in order of preference
     const fileManagers = ['xdg-open', 'nautilus', 'nemo', 'caja', 'thunar', 'pcmanfm', 'dolphin'];
-    // command = fileManagers.map(fm => `${fm} "${normalizedPath}"`).join(' || ');
-    command = `xdg-open ${normalizedPath}`
+    command = `gio open "${normalizedPath}" || xdg-open "${normalizedPath}" || nautilus "${normalizedPath}" || nemo "${normalizedPath}" || caja "${normalizedPath}" || thunar "${normalizedPath}" || pcmanfm "${normalizedPath}" || dolphin "${normalizedPath}"`;
+    // command = `xdg-open ${normalizedPath}`
     console.log(command);
   }
 
@@ -46,17 +48,28 @@ app.post('/open', (req, res) => {
   });
 });
 
-// New route to open folder in VS Code
-app.post('/open-vscode', (req, res) => {
+app.post('/open-vscode', async (req, res) => {
   const folderPath = req.body.path;
   const normalizedPath = path.normalize(folderPath);
 
-  exec(`code ${normalizedPath}`, (error) => {
+  const shFIle = path.join(__dirname, 'open.sh')
+  const command = `${shFIle} ${normalizedPath}`;
+
+
+
+  exec(command, { timeout: 15000 }, (error, stdout, stderr) => {
+    console.log(`stdout: ${stdout}`);
+    console.log(`stderr: ${stderr}`);
     if (error) {
       console.error(`Error opening folder in VS Code: ${error}`);
-      res.status(500).json({ error: 'Failed to open folder in VS Code', details: error.message });
+      res.status(500).json({
+        error: 'Failed to open folder in VS Code',
+        details: error.message,
+        stderr,
+        command
+      });
     } else {
-      res.json({ success: true });
+      res.json({ success: true, command });
     }
   });
 });
