@@ -8,11 +8,15 @@ const fs = require('fs').promises
 const app = express();
 const port = 9292;
 
+// app.use(express.static(path.join(__dirname, 'frontend/dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  // const filePath = path.join(__dirname, 'frontend/dist', 'index.html');
+  const filePath = path.join(__dirname, 'public', 'index.html');
+  console.log(filePath)
+  res.sendFile(filePath);
 });
 
 app.post('/open', (req, res) => {
